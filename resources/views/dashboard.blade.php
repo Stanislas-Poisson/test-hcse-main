@@ -48,10 +48,10 @@
                                 Tous
                             </x-nav-link>
                         </div>
-                        @foreach(\App\Models\Offer::$states as $state => $label)
+                        @foreach(\App\Enums\OfferState::cases() as $offerState)
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <x-nav-link :href="route('dashboard', ['state' => $state])" :active="request('state') == $state">
-                                    {{ $label }}
+                                <x-nav-link :href="route('dashboard', ['state' => $offerState->value])" :active="request('state') == $offerState->value">
+                                    {{ $offerState->label() }}
                                 </x-nav-link>
                             </div>
                         @endforeach
@@ -86,7 +86,7 @@
                                             <div class="line-clamp-2">{{ $offer->description }}</div>
                                         </td>
                                         <td class="px-4 py-3">
-                                            <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 px-2 py-1">{{ \App\Models\Offer::$states[$offer->state] }}</span>
+                                            <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 px-2 py-1">{{ $offer->state->label() }}</span>
                                         </td>
                                         <td class="px-4 py-3 text-right whitespace-nowrap">
                                             <x-primary-link href="{{ route('offers.edit', $offer) }}">Modifier</x-primary-link>
