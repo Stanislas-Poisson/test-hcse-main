@@ -15,7 +15,7 @@ class PasswordUpdateTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this
+        $testResponse = $this
             ->actingAs($user)
             ->from('/profile')
             ->put('/password', [
@@ -24,7 +24,7 @@ class PasswordUpdateTest extends TestCase
                 'password_confirmation' => 'new-password',
             ]);
 
-        $response
+        $testResponse
             ->assertSessionHasNoErrors()
             ->assertRedirect('/profile');
 
@@ -35,7 +35,7 @@ class PasswordUpdateTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this
+        $testResponse = $this
             ->actingAs($user)
             ->from('/profile')
             ->put('/password', [
@@ -44,7 +44,7 @@ class PasswordUpdateTest extends TestCase
                 'password_confirmation' => 'new-password',
             ]);
 
-        $response
+        $testResponse
             ->assertSessionHasErrorsIn('updatePassword', 'current_password')
             ->assertRedirect('/profile');
     }

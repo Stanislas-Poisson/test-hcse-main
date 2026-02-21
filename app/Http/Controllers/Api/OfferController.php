@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Offer;
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\OfferResource;
+use App\Queries\CatalogueQuery;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class OfferController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(CatalogueQuery $catalogueQuery): AnonymousResourceCollection
     {
-        $offers = Offer::ofState('published')->with('products', fn ($q) => $q->where('state', 'published'))->get();
-
-        return response()->json($offers);
+        return OfferResource::collection($catalogueQuery->getPublishedOffers());
     }
 }

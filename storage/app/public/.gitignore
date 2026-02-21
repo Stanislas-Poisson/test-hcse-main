@@ -1,2 +1,8 @@
 *
 !.gitignore
+!offers/
+offers/*
+!offers/placeholder.jpg
+!products/
+products/*
+!products/placeholder.jpg

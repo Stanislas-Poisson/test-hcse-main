@@ -14,25 +14,25 @@ class ProfileTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this
+        $testResponse = $this
             ->actingAs($user)
             ->get('/profile');
 
-        $response->assertOk();
+        $testResponse->assertOk();
     }
 
     public function test_profile_information_can_be_updated(): void
     {
         $user = User::factory()->create();
 
-        $response = $this
+        $testResponse = $this
             ->actingAs($user)
             ->patch('/profile', [
                 'name' => 'Test User',
                 'email' => 'test@example.com',
             ]);
 
-        $response
+        $testResponse
             ->assertSessionHasNoErrors()
             ->assertRedirect('/profile');
 
@@ -47,14 +47,14 @@ class ProfileTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this
+        $testResponse = $this
             ->actingAs($user)
             ->patch('/profile', [
                 'name' => 'Test User',
                 'email' => $user->email,
             ]);
 
-        $response
+        $testResponse
             ->assertSessionHasNoErrors()
             ->assertRedirect('/profile');
 
@@ -65,13 +65,13 @@ class ProfileTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this
+        $testResponse = $this
             ->actingAs($user)
             ->delete('/profile', [
                 'password' => 'password',
             ]);
 
-        $response
+        $testResponse
             ->assertSessionHasNoErrors()
             ->assertRedirect('/');
 
@@ -83,14 +83,14 @@ class ProfileTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this
+        $testResponse = $this
             ->actingAs($user)
             ->from('/profile')
             ->delete('/profile', [
                 'password' => 'wrong-password',
             ]);
 
-        $response
+        $testResponse
             ->assertSessionHasErrorsIn('userDeletion', 'password')
             ->assertRedirect('/profile');
 

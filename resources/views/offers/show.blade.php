@@ -21,7 +21,7 @@
                             <div class="flex items-center gap-3">
                                 <h3 class="text-2xl font-semibold">{{ $offer->name }}</h3>
                                 <span class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
-                                    {{ \App\Models\Offer::$states[$offer->state] ?? $offer->state }}
+                                    {{ $offer->state->label() }}
                                 </span>
                             </div>
                             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Slug: <span class="font-mono">{{ $offer->slug }}</span></p>
@@ -67,7 +67,7 @@
                                         <td class="px-4 py-3">{{ number_format((float)$product->price, 2, ',', ' ') }} €</td>
                                         <td class="px-4 py-3">
                                             <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
-                                                {{ \App\Models\Product::$states[$product->state] ?? $product->state }}
+                                                {{ $product->state->label() }}
                                             </span>
                                         </td>
                                     </tr>
