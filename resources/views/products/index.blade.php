@@ -47,7 +47,7 @@
                                         <td class="px-4 py-3">{{ number_format((float)$product->price, 2, ',', ' ') }} €</td>
                                         <td class="px-4 py-3">
                                             <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
-                                                {{ \App\Models\Product::$states[$product->state] ?? $product->state }}
+                                                {{ $product->state->label() }}
                                             </span>
                                         </td>
                                         <td class="px-4 py-3 text-right whitespace-nowrap">
