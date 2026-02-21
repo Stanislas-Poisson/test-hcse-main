@@ -1,0 +1,65 @@
+services:
+    app:
+        build:
+            context: .docker/php
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP:-1000}'
+        image: hellocse-app
+        container_name: hellocse-app
+        restart: unless-stopped
+        working_dir: /var/www/html
+        environment:
+            WWWUSER: '${WWWUSER:-1000}'
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - hellocse
+        depends_on:
+            mysql:
+                condition: service_healthy
+        ports:
+            - '${APP_PORT:-8080}:80'
+
+    mysql:
+        image: 'mysql:8.0'
+        container_name: hellocse-mysql
+        restart: unless-stopped
+        ports:
+            - '${FORWARD_DB_PORT:-3306}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - 'hellocse-mysql:/var/lib/mysql'
+        networks:
+            - hellocse
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '-p${DB_PASSWORD}']
+            retries: 3
+            timeout: 5s
+
+    mailpit:
+        image: 'axllent/mailpit:latest'
+        container_name: hellocse-mailpit
+        restart: unless-stopped
+        ports:
+            - '${FORWARD_MAILPIT_PORT:-1025}:1025'
+            - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
+        networks:
+            - hellocse
+
+networks:
+    hellocse:
+        driver: bridge
+
+volumes:
+    hellocse-mysql:
+        driver: local
